@@ -6,10 +6,14 @@ use App\Models\User;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\JsonResponse;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
+use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
+    /**
+     * GET /auth
+     **/
     public function redirectToAuth(): JsonResponse
     {
         return response()->json([
@@ -20,6 +24,9 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * GET /auth/callback
+     **/
     public function handleAuthCallback(): JsonResponse
     {
         $socialiteUser = null;
@@ -27,13 +34,7 @@ class AuthController extends Controller
         try {
             /** @var SocialiteUser $socialiteUser */
             $socialiteUser = Socialite::driver('google')->stateless()->user();
-
-            \Log::info(json_encode($socialiteUser));
-
         } catch (ClientException $e) {
-            
-            \Log::info($e);
-
             return response()->json(['error' => 'Invalid credentials provided.'], 422);
         }
 
@@ -56,5 +57,17 @@ class AuthController extends Controller
             'access_token' => $user->createToken('google-token')->plainTextToken,
             'token_type' => 'Bearer',
         ]);
+    }
+
+    /**
+     * GET /auth/social
+     **/
+    public function authenticateSocialMethod(Request $request)
+    {
+        return response()->json([
+            'email' => $request->data['email'],
+            'google_id' => $request->data['google_id'],
+        ]);
+
     }
 }

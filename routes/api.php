@@ -12,3 +12,5 @@ Route::get('/user', function (Request $request) {
 
 Route::get('auth', [AuthController::class, 'redirectToAuth']);
 Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
+
+Route::post('auth/social', [AuthController::class, 'authenticateSocialMethod']);

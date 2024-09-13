@@ -23,7 +23,7 @@
 
         <label for="posted">Posteado</label>
         <select name="posted">
-            <option value="no">No</option>
+            <option value="not">No</option>
             <option value="yes">Si</option>
         </select>
 

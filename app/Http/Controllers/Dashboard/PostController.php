@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\Post\StoreRequest;
+use App\Http\Requests\Post\PutRequest;
 
 class PostController extends Controller
 {
@@ -15,7 +16,6 @@ class PostController extends Controller
      */
     public function index()
     {
-        // $posts = Post::get();
         $posts = Post::paginate(5);
         return view('dashboard/post/index', compact('posts'));
     }
@@ -26,7 +26,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::pluck('id', 'title');
-        echo view('dashboard.post.create', compact('categories'));
+        $post = new Post();
+
+        echo view('dashboard.post.create', compact('categories', 'post'));
     }
 
     /**
@@ -46,6 +48,8 @@ class PostController extends Controller
 
         $data = array_merge($request->all(), ['image' => '']);
         Post::create($data);
+
+        return redirect('post');
     }
 
     /**
@@ -53,7 +57,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('dashboard.post.show', ['post' => $post]);
     }
 
     /**
@@ -61,15 +65,26 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $categories = Category::pluck('id', 'title');
+
+        return view('dashboard.post.edit', compact('categories', 'post'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(PutRequest $request, Post $post)
     {
-        //
+        $data = $request->validated();
+
+        if (isset($data['image'])) {
+            $data['image'] = $filename = time() . '.' . $data['image']->extension();
+
+            $request->image->move(public_path('uploads/posts'), $filename);
+        }
+
+        $post->update($data);
+        return to_route('post.index');
     }
 
     /**
@@ -77,6 +92,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return to_route('post.index');
     }
 }

@@ -2,34 +2,38 @@
 
 @section('content')
     <div>
-        <a href="{{ route('category.create') }}">Create</a>
+        <a class="btn" href="{{ route('category.create') }}">Create</a>
     </div>
 
-    <table>
-        <thead>
-            <tr>Id</tr>
-            <tr>Title</tr>
-            <tr>Options</tr>
-        </thead>
-
-        <tbody>
-            @foreach ($categories as $category)
+    <div class="relative overflow-x-auto">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>{{ $category->id }}</td>
-                    <td>{{ $category->title }}</td>
-                    <td>
-                        <a href="{{ route('category.edit', $category->id) }}">Edit</a>
-                        <a href="{{ route('category.show', $category->id) }}">Show</a>
-                        <form action="{{ route('category.destroy', $category) }}" method="post">
-                            @method('DELETE')
-                            @csrf
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Options</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+                @foreach ($categories as $category)
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td>{{ $category->id }}</td>
+                        <td>{{ $category->title }}</td>
+                        <td>
+                            <a href="{{ route('category.edit', $category->id) }}">Edit</a>
+                            <a href="{{ route('category.show', $category->id) }}">Show</a>
+                            <form action="{{ route('category.destroy', $category) }}" method="post">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
     
 
     {{ $categories->links() }}

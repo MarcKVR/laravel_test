@@ -26,7 +26,7 @@ class CategoryController extends Controller
         $data = array_merge($request->all(), ['image' => '']);
         Category::create($data);
 
-        return redirect('category');
+        return redirect()->route('category.index');
     }
 
     public function show(Category $category)

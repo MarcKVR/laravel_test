@@ -49,7 +49,7 @@ class PostController extends Controller
         $data = array_merge($request->all(), ['image' => '']);
         Post::create($data);
 
-        return redirect('post');
+        return redirect()->route('post.index');
     }
 
     /**

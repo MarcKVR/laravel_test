@@ -5,18 +5,20 @@
         <a href="{{ route('post.create') }}">Create</a>
     </div>
 
-    <table>
+    <table class="table">
         <thead>
-            <tr>Id</tr>
-            <tr>Title</tr>
-            <tr>Posted</tr>
-            <tr>Category</tr>
-            <tr>Options</tr>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Posted</th>
+                <th>Category</th>
+                <th>Options</th>
+            </tr>
         </thead>
 
         <tbody>
             @foreach ($posts as $post)
-                <tr>
+                <tr class="border">
                     <td>{{ $post->id }}</td>
                     <td>{{ $post->title }}</td>
                     <td>{{ $post->posted }}</td>

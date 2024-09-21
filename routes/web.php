@@ -6,7 +6,8 @@ use App\Http\Controllers\Dashboard\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('auth/login');
+    // return view('auth/login');
+    return view('welcome');
 });
 
 Route::middleware('auth')->group(function () {
@@ -15,8 +16,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
-    Route::get('/dashboard', function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'admin']], function () {
+    Route::get('/', function () {
         return view('dashboard');
     })->name('dashboard');
 

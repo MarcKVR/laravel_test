@@ -23,8 +23,7 @@ class CategoryController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $data = array_merge($request->all(), ['image' => '']);
-        Category::create($data);
+        Category::create($request->validated());
 
         return redirect()->route('category.index');
     }

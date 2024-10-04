@@ -37,17 +37,7 @@ class PostController extends Controller
     // public function store(Request $request)
     public function store(StoreRequest $request)
     {
-        // $validated = $request->validate([
-        //     'title' => 'required|min:5|max:500',
-        //     'slug' => 'required|min:5|max:500',
-        //     'content' => 'required|min:8',
-        //     'category_id' => 'required|integer',
-        //     'description' => 'required|min:9',
-        //     'posted' => 'required'
-        // ]);
-
-        $data = array_merge($request->all(), ['image' => '']);
-        Post::create($data);
+        Post::create($request->validated());
 
         return redirect()->route('post.index');
     }

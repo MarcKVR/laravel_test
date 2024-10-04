@@ -28,12 +28,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'admin']], funct
     ]);
 });
 
-Route::group(['prefx' => 'blog'], function () {
-    Route::controller(BlogController::class)->group(function() {
+Route::group(['prefix' => 'blog'], function () {
+    Route::controller(BlogController::class)->group(function () {
         Route::get('/', 'index')->name('web.blog.index');
         Route::get('/detail/{post}', 'show')->name('web.blog.show');
     });
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

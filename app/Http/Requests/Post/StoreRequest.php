@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Post;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException as ValidationValidationException;
 
 class StoreRequest extends FormRequest
 {
@@ -29,5 +32,13 @@ class StoreRequest extends FormRequest
             'description' => 'required|min:9',
             'posted' => 'required'
         ];
+    }
+
+    public function failedValidation(Validator $validator): void
+    {
+        if ($this->expectsJson()) {
+            $response = new Response($validator->errors(), 422);
+            throw new ValidationValidationException($validator, $response);
+        }
     }
 }

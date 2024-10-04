@@ -3,6 +3,10 @@
 namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException as ValidationValidationException;
+
 
 class PutRequest extends FormRequest
 {
@@ -27,8 +31,16 @@ class PutRequest extends FormRequest
             'category_id' => 'required|integer',
             'description' => 'required|min:9',
             'posted' => 'required',
-            'slug' => 'required|min:5|max:250|unique:posts,slug,'.$this->route('post')->id,
+            'slug' => 'required|min:5|max:250|unique:posts,slug,' . $this->route('post')->id,
             'image' => 'mimes:jpeg,jpg,png|max:10240',
         ];
+    }
+
+    public function failedValidation(Validator $validator): void
+    {
+        if ($this->expectsJson()) {
+            $response = new Response($validator->errors(), 422);
+            throw new ValidationValidationException($validator, $response);
+        }
     }
 }
